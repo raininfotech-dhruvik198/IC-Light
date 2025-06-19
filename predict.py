@@ -398,10 +398,10 @@ class Predictor(BasePredictor):
 
 
         # Samplers - Keep existing ones, Flux might use its own default or these can be passed.
-        # The default scheduler for Flux is `EulerDiscreteScheduler`.
-        # For simplicity, we can rely on the pipeline's default or set one explicitly if needed.
-        # These scheduler instances can be used if we want to switch schedulers dynamically.
-        ddim_scheduler = DDIMScheduler.from_config(flux_pipe.scheduler.config)
+        # Re-initialize schedulers with their original full parameters
+        # This ensures they retain their distinct configurations for dynamic selection.
+
+        ddim_scheduler = DDIMScheduler(
             num_train_timesteps=1000,
             beta_start=0.00085,
             beta_end=0.012,
@@ -411,9 +411,21 @@ class Predictor(BasePredictor):
             steps_offset=1,
         )
 
-        euler_a_scheduler = EulerAncestralDiscreteScheduler.from_config(flux_pipe.scheduler.config)
+        euler_a_scheduler = EulerAncestralDiscreteScheduler(
+            num_train_timesteps=1000,
+            beta_start=0.00085,
+            beta_end=0.012,
+            steps_offset=1
+        )
 
-        dpmpp_2m_sde_karras_scheduler = DPMSolverMultistepScheduler.from_config(flux_pipe.scheduler.config)
+        dpmpp_2m_sde_karras_scheduler = DPMSolverMultistepScheduler(
+            num_train_timesteps=1000,
+            beta_start=0.00085,
+            beta_end=0.012,
+            algorithm_type="sde-dpmsolver++",
+            use_karras_sigmas=True,
+            steps_offset=1,
+        )
 
         # To use a specific scheduler by default with flux_pipe:
         # from diffusers import EulerDiscreteScheduler
