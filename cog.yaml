@@ -15,22 +15,14 @@ build:
   python_version: "3.10"
 
   # a list of packages in the format <package-name>==<version>
+  # Using requirements.txt as the source of truth for python packages
   python_packages:
-    - diffusers==0.27.2
-    - transformers==4.36.2
-    - opencv-python
-    - safetensors
-    - pillow==10.2.0
-    - einops
-    - torch
-    - torchvision
-    - peft
-    - gradio==3.41.2
-    - protobuf==3.20
+    - "-r requirements.txt"
 
   # commands run after the environment is setup
   run:
     - curl -o /usr/local/bin/pget -L "https://github.com/replicate/pget/releases/download/v0.8.1/pget_linux_x86_64" && chmod +x /usr/local/bin/pget
+    - echo "Replicate build cache breaker $(date)"
 
 # predict.py defines how predictions are run on your model
 predict: "predict.py:Predictor"
