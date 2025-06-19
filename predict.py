@@ -359,7 +359,7 @@ class Predictor(BasePredictor):
         )
 
         # Load FLUX pipeline
-        flux_model_id = "camenduru/FLUX.1-dev"
+        flux_model_id = "black-forest-labs/FLUX.1-dev"
         # Note: FLUX.1-dev is very large. Consider FLUX.1-schnell if memory/speed issues arise.
         # The pipeline will load all necessary components: transformer, text encoders, VAE, tokenizer.
         print(f"Loading FLUX pipeline: {flux_model_id}")
